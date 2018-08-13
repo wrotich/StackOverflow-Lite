@@ -7,7 +7,7 @@ body {
     margin:0px;
     margin-top: 5px;
     background: #648880;
-    background: radial-gradient(#303952, #293f50);
+    background: radial-gradient(#4caf8e, #293f50);
     background-size: 100% 110%;
 
 }
@@ -17,7 +17,28 @@ body {
     margin-right: auto;
     margin-left: auto;
     font-size: 1.2em;
-    color: #b7337a;
+    color: #000;
+}
+.topnav {
+  background-color: #333;
+  overflow: hidden;
+}
+.topnav a {
+  float: left;
+  color: #f2f2f2;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+  font-size: 17px;
+}
+.topnav a:hover {
+  background-color: #ddd;
+  color: black;
+
+}
+.topnav a.active{
+  background-color: #afab4c;
+  color: white;
 }
   .index{
     margin-top: 50px;
@@ -37,7 +58,7 @@ body {
 .login-form h3 {
   text-align:left;
   margin-left:40px;
-  color:#b7337a;
+  color:#000;
 }
 .login-form {
   box-sizing:border-box;
@@ -65,7 +86,7 @@ body {
   background:#fff;
   border:1px solid #f2f2f2;
   border-radius:20px;
-  color: #b7337a;
+  color: #000;
   text-transform:uppercase;
   font-family: sans-serif;
   cursor:pointer;
@@ -108,7 +129,7 @@ body {
     font-size: 2em;
   }
   a {
-    color: #b7337a;
+    color: #000;
     text-decoration: none;
   }
   a:hover,
@@ -137,7 +158,7 @@ body {
     padding: 6px 12px;
     font-size: 14px;
     line-height: 1.42857143;
-    color: #b7337a;
+    color: #000;
     background-color: #fff;
     border: 1px solid #ccc;
     border-radius: 4px;
