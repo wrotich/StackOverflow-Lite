@@ -20,12 +20,12 @@ Complete UI Pages
 
 # Installation
 To install:
-git clone https://github.com/winniejerop/StackOverflow-Lite.git
-cd StackOverflow-Lite
-virtualenv venv
-venv/Scripts/activate (Windows)
-pip install requirements.txt
-python index.py 
+-git clone https://github.com/winniejerop/StackOverflow-Lite.git
+-cd StackOverflow-Lite
+-virtualenv venv
+-venv/Scripts/activate (Windows)
+-pip install requirements.txt
+-python index.py 
 
 # Testing
 pytest
