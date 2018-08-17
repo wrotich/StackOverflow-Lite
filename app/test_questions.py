@@ -3,13 +3,16 @@ import sys
 import unittest
 import json
 
+#local imports
+from questions import create_app
+
+
 
 class QuestionsTests(unittest.TestCase):
     #all the test cases for the questions
     def setUp(self):
         #app initialization"""
-        self.app = create_app()
-        self.client = self.app.test_client()
+        self.client = create_app()
         self.question =  {
             "text":"Which is the best programming laanguage?",
             "year":"2018"
@@ -18,8 +21,7 @@ class QuestionsTests(unittest.TestCase):
             "text":"You do so by using the int keyword like so: int x;",
             "year":"2018"
         }
-        with self.app.app_context():
-            self.data = test_data
+        
 
 
     def test_get_all_questions(self):
