@@ -16,7 +16,7 @@ def create_app():
         response.status_code = 200
         return response
     
-    @app.route('/api/v1/questions/<questionid>', methods=['GET'])
+    @app.route('/api/v1/questions/<questionid>', methods=['GET', 'POST'])
     def question(id, **kwargs):
         """This function fetches a single question using a unique id"""
         questions = data['questions']
@@ -33,6 +33,8 @@ def create_app():
             # return the question
             response.status_code = 200
             return jsonify(new_question)
+
+
 
     
     return app
