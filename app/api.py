@@ -1,57 +1,86 @@
-import json
-from datetime import datetime
+from app import app
+from flask import request , jsonify, json
+from app.models import Answer, Question
 
-#local imports
-from flask import Flask
-from flask import request, jsonify, abort
-from data import *
+all_questions = []
+all_answers = []
 
-def create_app():
-    app = Flask(__name__)
-        
-    @app.route('/api/v1/questions/', methods=['GET'])
-    def questions():
-        # return all questions
-        response = jsonify(data['questions'])
-        response.status_code = 200
-        return response
-    
-    @app.route('/api/v1/questions/<questionid>', methods=['GET', 'POST'])
-    def question(id, **kwargs):
-        """This function fetches a single question using a unique id"""
-        questions = data['questions']
-        new_question = {}
-        for q in questions:
-            if int(q['id']) == int(id):
-                new_question = q 
-            
-        if len(new_question) == 0:
-            # question not found
-            # return error 404
-            abort(404)
-        else:
-            # return the question
-            response.status_code = 200
-            return jsonify(new_question)
 
-    @app.route('/api/v1/questions/<int:id>/answers', methods=['POST'])
-    def answer(id, **kwargs):
-        """ Enables the user to post an answer 
-        to a particular question, given the question id """
-        questions = data['questions']
-        question = {} 
-        answer = json.loads(request.data.decode('utf-8').replace("'", '"'))
-        for q in questions:
-            if int(q['id']) == int(id):
-                # add the received answer to the answers list
-                question = q
-                question['answers'].append(answer)
-                response.status_code = 201
-                return response         
-            else:
-            # the question with the given id was not found
-            # return error 404
-                abort(404)
 
-    
-    return app
+
+@app.route("/api/v1/questions", methods=["POST"])
+# posting a single question
+def post_question():
+    data = request.get_json()
+    question = data.get("question").strip()
+    qstn_id = len(all_questions) + 1
+
+
+    new_question = Question(qstn_id , question)
+    all_questions.append(new_question)
+    return jsonify({"message":"New question successfully posted"}), 201
+
+
+@app.route("/api/v1/questions", methods=["GET"])
+# fetching all questions
+def get_all_questions():
+    if len(all_questions) > 0:
+        return jsonify({
+            "message":"Successfully viewed Questions",
+            "Available questions":[     
+                question.__dict__ for question in all_questions
+            ]
+        }),200
+    return jsonify({"message":"No Question has been posted yet"}), 404
+
+
+@app.route("/api/v1/questions/<question_id>", methods=["GET"])
+# get a specific question
+def get_a_question(question_id):
+    _id = question_id.strip()
+
+    for question in range(len(all_questions)):
+        if ((all_questions[question]["qstn_id"]) == int(_id)):
+            return jsonify({
+            "message":"Successfully viewed Question",
+            "Question":[     
+                all_questions[question]["question"]
+            ]
+    }),200
+    return jsonify({
+        "message":"No such question is available",
+    }),400
+
+
+@app.route("/api/v1/questions/<question_id>/answer", methods=["POST"])
+# answering a specific question
+def post_answer(question_id):
+    _id = question_id.strip()
+    data = request.get_json()
+    answer = data.get("answer")
+    ans = answer.strip()
+
+    for question in range(len(all_questions)):
+        if ((all_questions[question]["qstn_id"]) == int(_id)):
+            ans_id = len(all_answers) + 1
+            new_answer = Answer(ans_id, ans, _id)
+            all_answers.append(new_answer)
+            return jsonify({
+            "message":"Answer successfully posted to question",
+            "Question answered":[     
+                all_questions[question]["question"]
+            ]}),201
+    return jsonify({
+        "message":"No such question is available",
+    }),400
+
+@app.route("/api/v1/answers", methods=["GET"])
+def get_all_answers():
+    if len(all_answers) > 0:
+        return jsonify({
+            "message":"Successfully viewed Answers",
+            "Available answers":[     
+                answer.__dict__ for answer in all_answers
+            ]
+        }),200
+    return jsonify({"message":"No answer has been posted yet"}), 404
