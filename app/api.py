@@ -5,8 +5,15 @@ from app.models import Answer, Question
 all_questions = []
 all_answers = []
 
+@app.route("/",methods=["GET"])
+def home():
 
-
+     return jsonify({"endpoints":[
+         {'Get all questions': "/api/v1/question GET"},
+         {'Get a single question':"/api/v1/questions/<question_id> GET"},
+         {'Post question':"/api/v1/questions POST"},
+         {'Post Answer':"/api/v1/questions/<question_id>/answer POST"}
+         ]})
 
 @app.route("/api/v1/questions", methods=["POST"])
 # posting a single question
