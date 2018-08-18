@@ -1,0 +1,6 @@
+[
+  "api/tests/test_api.py::TestApi::test_fetch_a_single_question", 
+  "api/tests/test_api.py::TestApi::test_fetch_questions", 
+  "api/tests/test_api.py::TestApi::test_post_answer", 
+  "api/tests/test_api.py::TestApi::test_post_new_question"
+]
