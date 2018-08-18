@@ -1,7 +1,0 @@
-{
-  "api/tests/test_api.py::TestApi": true, 
-  "api/tests/test_api.py::TestApi::test_fetch_a_single_question": true, 
-  "api/tests/test_api.py::TestApi::test_fetch_questions": true, 
-  "api/tests/test_api.py::TestApi::test_post_answer": true, 
-  "api/tests/test_api.py::TestApi::test_post_new_question": true
-}
