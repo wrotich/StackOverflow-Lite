@@ -1,7 +1,7 @@
 # StackOverflow-Lite
 [![Travis Build](https://img.shields.io/travis/winniejerop/StackOverflow-Lite.svg?style=popout)](https://travis-ci.org/winniejerop/StackOverflow-Lite)
 [![Test Coverage](https://img.shields.io/coveralls/github/jekyll/jekyll.svg?style=popout)](https://coveralls.io/github/winniejerop/StackOverflow-Lite)
-[![Codeclimate](https://img.shields.io/codeclimate/issues/twbs/bootstrap.svg?style=popout)](https://codeclimate.com/github/winniejerop/StackOverflow-Lite/issues)
+[![Codeclimate](https://img.shields.io/codeclimate/maintainability-percentage/angular/angular.js.svg?style=popout)](https://codeclimate.com/github/winniejerop/StackOverflow-Lite/issues)
 
 # Project Overview
 StackOverflow-lite is a platform where people can ask questions and provide answers.
