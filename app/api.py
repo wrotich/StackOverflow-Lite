@@ -15,18 +15,6 @@ def home():
          {'Post Answer':"/api/v1/questions/<question_id>/answer POST"}
          ]})
 
-@app.route("/api/v1/questions", methods=["POST"])
-# posting a single question
-def post_question():
-    data = request.get_json()
-    question = data.get("question").strip()
-    qstn_id = len(all_questions) + 1
-
-
-    new_question = Question(qstn_id , question)
-    all_questions.append(new_question)
-    return jsonify({"message":"New question successfully posted"}), 201
-
 
 @app.route("/api/v1/questions", methods=["GET"])
 # fetching all questions
@@ -58,6 +46,16 @@ def get_a_question(question_id):
         "message":"No such question is available",
     }),400
 
+@app.route("/api/v1/questions", methods=["POST"])
+# posting a single question
+def post_question():
+    data = request.get_json()
+    question = data.get("question").strip()
+    qstn_id = len(all_questions) + 1
+    new_question = Question(qstn_id , question)
+    all_questions.append(new_question)
+    return jsonify({"message":"New question successfully posted"}), 201
+
 
 @app.route("/api/v1/questions/<question_id>/answer", methods=["POST"])
 # answering a specific question
@@ -81,13 +79,5 @@ def post_answer(question_id):
         "message":"No such question is available",
     }),400
 
-@app.route("/api/v1/answers", methods=["GET"])
-def get_all_answers():
-    if len(all_answers) > 0:
-        return jsonify({
-            "message":"Successfully viewed Answers",
-            "Available answers":[     
-                answer.__dict__ for answer in all_answers
-            ]
-        }),200
-    return jsonify({"message":"No answer has been posted yet"}), 404
+
+
