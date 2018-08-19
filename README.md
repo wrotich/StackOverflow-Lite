@@ -1,10 +1,11 @@
 # StackOverflow-Lite
-[![travis build](https://img.shields.io/travis/winniejerop/StackOverflow-Lite.svg?style=popout)](https://travis-ci.org/winniejerop/StackOverflow-Lite)
+[![Travis Build](https://img.shields.io/travis/winniejerop/StackOverflow-Lite.svg?style=popout)](https://travis-ci.org/winniejerop/StackOverflow-Lite)
+[![Test Coverage](https://img.shields.io/coveralls/github/jekyll/jekyll.svg?style=popout)](https://coveralls.io/github/winniejerop/StackOverflow-Lite)
+[![Codeclimate](https://img.shields.io/codeclimate/maintainability-percentage/angular/angular.js.svg?style=popout)](https://codeclimate.com/github/winniejerop/StackOverflow-Lite/issues)
 
-![]()
-
-Project Overview
+# Project Overview
 StackOverflow-lite is a platform where people can ask questions and provide answers.
+
 # Required Features
 
 1. Users can create an account and log in.
@@ -51,6 +52,8 @@ To install:
 
 # Api Endpoints
 /api/v1/questions
+
 /api/v1/questions/001
+
 /api/v1/questions/1:001/answer
 
