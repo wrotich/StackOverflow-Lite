@@ -1,8 +1,4 @@
-<<<<<<< HEAD
-# Model class for the question part
-=======
 # Model class for the questions part
->>>>>>> ae9b92c35c1d803c927eddb47dae30feeb882190
 class Question:
     def __init__(self, qstn_id, question):
         self.qstn_id = qstn_id
