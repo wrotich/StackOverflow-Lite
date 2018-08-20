@@ -33,7 +33,7 @@ def get_all_questions():
 # get a specific question
 def get_a_question(question_id):
     _id = question_id.strip()
-
+    
     for question in range(len(all_questions)):
         if ((all_questions[question]["qstn_id"]) == int(_id)):
             return jsonify({
@@ -51,6 +51,8 @@ def get_a_question(question_id):
 def post_question():
     data = request.get_json()
     question = data.get("question").strip()
+    if not question:
+        return jsonify({"message": "No input was given"}), 400
     qstn_id = len(all_questions) + 1
     new_question = Question(qstn_id , question)
     all_questions.append(new_question)

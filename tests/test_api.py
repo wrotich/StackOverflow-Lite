@@ -53,13 +53,16 @@ class TestApi(unittest.TestCase):
         self.assertEquals(response["message"], "New question successfully posted")
         self.assertEquals(res.status_code, 201)
 
+    def test_post_a_question_with_empty_content(self):
+        response = self.app.post("/api/v1/questions",
+            content_type='application/json',
+            data=json.dumps(dict(question=" "),))
+        res = json.loads(response.data)
+        self.assertEquals(res["message"], "No input was given")
+        self.assertEquals(response.status_code, 400)
 
     def test_post_answer(self):
         """ Test for posting an answer """
-        res = self.app.post("/api/v1/questions",
-            content_type='application/json',
-            data=json.dumps(dict(question="This is my question 1"),))
-
         res2 = self.app.post("/api/v1/questions/1/answer",
             content_type='application/json',
             data=json.dumps(dict(answer="This is my answer 1"),))
@@ -67,4 +70,16 @@ class TestApi(unittest.TestCase):
         response = json.loads(res2.data)
         self.assertEquals(response["message"], "Answer successfully posted to question")
         self.assertEquals(res2.status_code, 201) 
-        
+
+    def test_post_an_answer_using_wrong_question_id(self):
+        res2 = self.app.post("/api/v1/questions/1000/answer",
+        content_type='application/json',
+        data= json.dumps(dict(answer="This is my answer 1"),))
+        response = json.loads(res2.data)
+        self.assertEquals(response["message"], "No such question is available")
+        self.assertEquals(res2.status_code, 400)
+    
+    
+    
+
+
