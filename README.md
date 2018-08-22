@@ -25,6 +25,9 @@ Complete UI Pages
 5. User profile page
 6. Host UI template on github pages 
 
+# Hosted on GitHub pages
+https://winniejerop.github.io/StackOverflow-Lite/
+
 
 # Installation
 To install:
@@ -51,7 +54,9 @@ To install:
 - python run.py 
 
 # Api Endpoints
-/api/v1/questions
+/api/v1/questions (get all questions)
+
+/api/v1/questions (post a question)
 
 /api/v1/questions/001
 
