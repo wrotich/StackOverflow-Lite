@@ -80,6 +80,7 @@ class TestApi(unittest.TestCase):
         self.assertEquals(res2.status_code, 400)
     
     
-    
+    def tearDown(self):
+        self.app = app.test_client()
 
 
