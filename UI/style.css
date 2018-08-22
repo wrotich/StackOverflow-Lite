@@ -7,7 +7,7 @@ body {
     margin:0px;
     margin-top: 5px;
     background: #648880;
-    background: radial-gradient(#4caf8e, #293f50);
+    background: radial-gradient(#AAABBB, #2E9CCA);
     background-size: 100% 110%;
 
 }
@@ -37,7 +37,7 @@ body {
 
 }
 .topnav a.active{
-  background-color: #afab4c;
+  background-color: #f124a3;
   color: white;
 }
   .index{
