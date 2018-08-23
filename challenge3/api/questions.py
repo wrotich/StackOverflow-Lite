@@ -59,4 +59,3 @@ def delete_a_question(question_id):
     if row:
         return jsonify({"Question":"Successflully deleted question"}), 200
     return jsonify({"Questions": "No question found"}), 404
-    
