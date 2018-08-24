@@ -74,8 +74,13 @@ To install:
 
 # Api Endpoints
 POST /api/v1/auth/signup
+
 POST /api/v1/auth/login
+
 GET /api/v2/questions 
+
 GET /api/v2/questions/001
+
 POST /api/v2/questions/1:001/answer
+
 PUT /api/v2/questions/001/answers/<answerId>
