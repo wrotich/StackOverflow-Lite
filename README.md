@@ -62,3 +62,20 @@ To install:
 
 /api/v1/questions/1:001/answer
 
+# Challenge 3 - Setup API endpoints and secure them using JWT
+# Installation
+To install:
+- git clone https://github.com/winniejerop/StackOverflow-Lite.git
+- cd StackOverflow-Lite
+- virtualenv venv
+- venv/Scripts/activate (Windows)
+- pip install requirements.txt
+- python run.py 
+
+# Api Endpoints
+POST /api/v1/auth/signup
+POST /api/v1/auth/login
+GET /api/v2/questions 
+GET /api/v2/questions/001
+POST /api/v2/questions/1:001/answer
+PUT /api/v2/questions/001/answers/<answerId>
