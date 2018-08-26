@@ -39,10 +39,7 @@ class Answer:
         con = psycopg2.connect(**self.config)
         cur = con.cursor(cursor_factory=RealDictCursor)
         cur.execute(
-            """ SELECT *, ( SELECT  count(*) from votes 
-                WHERE votes.answer_id=answers.answer_id AND vote=true ) as upVotes,
-                ( SELECT count(*) from votes WHERE votes.answer_id=answers.answer_id
-                AND vote=false ) as downVotes FROM  answers
+            """ SELECT * FROM  answers
             """
         )
         queryset_list = cur.fetchall()
