@@ -6,7 +6,6 @@ app/__pycache__
 app/models.pyc
 run.pyc
 tests/__init__.pyc
-myenv
 .vscode
 .env
 config.py
