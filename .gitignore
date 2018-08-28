@@ -8,7 +8,6 @@ run.pyc
 tests/__init__.pyc
 .vscode
 .env
-config.py
 venv
 .cache
 .coverage
