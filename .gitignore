@@ -7,7 +7,6 @@ app/models.pyc
 run.pyc
 tests/__init__.pyc
 .vscode
-.env
 venv
 .cache
 .coverage
