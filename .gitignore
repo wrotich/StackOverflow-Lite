@@ -11,3 +11,4 @@ tests/__init__.pyc
 config.py
 venv
 .cache
+.coverage
