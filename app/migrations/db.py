@@ -20,11 +20,8 @@ class Database:
         if len(databases) > 0:
             print(" * Database {} exists".format(self.database))
             for command in migrations:
-                try:
-                    cur.execute(command)
-                    con.commit()
-                except Exception as e:
-                    print(e)
+                cur.execute(command)
+                con.commit()
         else:
             print(" * Database {} does not exists".format(self.database))
         con.close()
@@ -35,26 +32,17 @@ class Database:
         con = psycopg2.connect(**self.config)
         con.autocommit = True
         cur = con.cursor(cursor_factory=psycopg2.extras.DictCursor)
-        print('\n* Creating test db\n')
-        try:
-            cur.execute('CREATE DATABASE {} OWNER {};'.format(BaseConfig.TEST_DB, self.config.get('user')))
-        except:
-            pass
+        cur.execute('CREATE DATABASE {} OWNER {};'.format(BaseConfig.TEST_DB, self.config.get('user')))
         con.close()
         self.config['database'] = BaseConfig.TEST_DB
         con = psycopg2.connect(**self.config)
         cur = con.cursor(cursor_factory=psycopg2.extras.DictCursor)
         for command in migrations:
-            try:
-                cur.execute(command)
-                con.commit()
-                pass
-            except Exception as e:
-                print(e)
+            cur.execute(command)
+            con.commit()
         con.close()
 
     def drop_test_database(self):
-        print('\n * Dropping test database \n')
         self.config = db_config()
         con = psycopg2.connect(**self.config)
         con.autocommit = True

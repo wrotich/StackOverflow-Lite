@@ -8,6 +8,7 @@ from ..migrations.sql_setup import create_tables_commands
 class DatabaseTestCase(BaseTestCase):
 
     def test_database_configuration(self):
+        '''Tests for the correct database configs.'''
         db = Database()
         self.assertEqual(len(db.config.keys()), 4)
 

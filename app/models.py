@@ -27,7 +27,7 @@ class Answer:
             con.commit()
             response = cur.fetchone()
         except Exception as e:
-            print(e)
+            con.close()
         con.close()
         return response
 
@@ -60,19 +60,15 @@ class Answer:
             con.close()
             return queryset_list
         except Exception as e:
-            print(e)
+            con.close()
             return []
 
     def question_author(self):
         con = psycopg2.connect(**self.config)
-        try:
-            cur = con.cursor(cursor_factory=RealDictCursor)
-            query = "SELECT user_id FROM questions WHERE question_id=%s"
-            cur.execute(query, self.question_id)
-            return cur.fetchall()
-
-        except Exception as e:
-            print(e)
+        cur = con.cursor(cursor_factory=RealDictCursor)
+        query = "SELECT user_id FROM questions WHERE question_id=%s"
+        cur.execute(query, self.question_id)
+        return cur.fetchall()
         con.close()
         return False
 
@@ -122,7 +118,6 @@ class Answer:
             cur.execute(query, (self.accepted, self.answer_id, self.question_id))
             con.commit()
         except Exception as e:
-            print(e)
             result = False
         con.close()
         return result
@@ -139,7 +134,6 @@ class Answer:
             cur.execute(query, (self.answer_body, self.answer_id))
             con.commit()
         except Exception as e:
-            print(e)
             con.close()
             return False
         con.close()
@@ -170,7 +164,8 @@ class Question:
             con.commit()
             response = cur.fetchone()
         except Exception as e:
-            print(e)
+            # print(e)
+            con.close()
         con.close()
         return response
 
@@ -194,14 +189,15 @@ class Question:
                 cur.execute(query, (self.q, self.q))
             queryset_list = cur.fetchall()
         except Exception as e:
-            print(e)
+            con.close()
+            # print(e)
         con.close()
         return queryset_list
 
     def filter_by(self):
         """
         Selects a question by id
-        :return: False if record is not found else query list of found record
+        
         """
         con, queryset_list = psycopg2.connect(**self.config), None
         cur = con.cursor(cursor_factory=RealDictCursor)
@@ -218,7 +214,8 @@ class Question:
                 'answers': answers_queryset_list
             }
         except Exception as e:
-            print(e)
+            # print(e)
+            con.close()
         con.close()
         return queryset_list
 
@@ -237,7 +234,8 @@ class Question:
             questions_queryset_list = cur.fetchall()
             queryset_list = {'question': questions_queryset_list}
         except Exception as e:
-            print(e)
+            # print(e)
+            result = False
         con.close()
         return queryset_list
 
@@ -253,7 +251,7 @@ class Question:
             cur.execute(query, (self.title, self.body, self.question_id))
             con.commit()
         except Exception as e:
-            print(e)
+            # print(e)
             result = False
         con.close()
         return result
@@ -272,7 +270,8 @@ class Question:
             con.close()
             exists = True if len(queryset_list) >= 1 else False
         except Exception as e:
-            print(e)
+            # print(e)
+            con.close()
         return exists
 
     def delete(self):
@@ -290,7 +289,7 @@ class Question:
             cur.execute("DELETE from {} WHERE {}= '{}'".format(self.table, 'question_id', self.question_id))
             con.commit()
         except Exception as e:
-            print(e)
+            # print(e)
             con.close()
             return False
         con.close()
@@ -320,7 +319,8 @@ class User:
             cur.execute("select username, email, user_id, created_at from {} WHERE user_id='{}'".format(self.table, self.user_id))
             queryset_list = cur.fetchall()
         except Exception as e:
-            print(e)
+            # print(e)
+            con.close()
         con.close()
         return queryset_list
 
@@ -331,7 +331,8 @@ class User:
             cur.execute("select * from {} WHERE email='{}'".format(self.table, self.email))
             queryset_list = cur.fetchall()
         except Exception as e:
-            print(e)
+            # print(e)
+            con.close()
         con.close()
         return queryset_list
 
@@ -347,7 +348,7 @@ class User:
             cur.execute(query, (self.email, self.username, self.user_id))
             con.commit()
         except Exception as e:
-            print(e)
+            # print(e)
             result = False
         con.close()
         return result
@@ -361,7 +362,7 @@ class User:
             con.commit()
             con.close()
         except Exception as e:
-            print(e)
+            # print(e)
             con.close()
             return False
         return True
@@ -375,6 +376,7 @@ class User:
             con.commit()
             response = cur.fetchone()
         except Exception as e:
-            print(e)
+            # print(e)
+            con.close()
         con.close()
         return response

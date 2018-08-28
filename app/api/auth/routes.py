@@ -75,7 +75,6 @@ class LoginAPI(MethodView):
                 response_object = {'status': 'fail', 'message': 'User does not exist.'}
                 return make_response(jsonify(response_object)), 404
         except Exception as e:
-            print(e)
             response_object = {'status': 'fail', 'message': 'Try again'}
             return make_response(jsonify(response_object)), 500
 
@@ -110,7 +109,7 @@ class LogoutAPI(MethodView):
     def post(self):
         # get auth token
         auth_header = request.headers.get('Authorization')
-        return auth_header
+        return jsonify({}), 500
 
 
 # Define the API resources
