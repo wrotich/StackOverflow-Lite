@@ -11,3 +11,4 @@ myenv
 .env
 config.py
 venv
+.cache
