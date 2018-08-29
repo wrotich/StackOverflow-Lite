@@ -1,5 +1,5 @@
 """
-    This file contains commands for creating/dropping database tables
+    This file contains commands for creating/dropping tables in the db.
 """
 drop_tables_commands = (
     """

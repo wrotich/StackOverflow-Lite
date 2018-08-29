@@ -15,13 +15,11 @@ class Answer:
         self.user_id = data.get('user_id')
 
     def save(self):
-        """
-        Creates an answer record in answers table
-        :return: None of inserted record
-        """
+        """ Creates an answer record in answers table."""
         con, response = psycopg2.connect(**self.config), None
         cur = con.cursor(cursor_factory=RealDictCursor)
         try:
+            # RETURNING grabs the changed value to avoid having to select it again after an update
             query = "INSERT INTO answers (user_id, answer_body, question_id) VALUES (%s, %s, %s) RETURNING *; "
             cur.execute(query, (self.user_id, self.answer_body, self.question_id))
             con.commit()
@@ -32,33 +30,27 @@ class Answer:
         return response
 
     def query(self):
-        """
-        Fetch all records from a answers table
-        :return: list: query set
-        """
+        """ Fetch all records from a answers table. """
         con = psycopg2.connect(**self.config)
         cur = con.cursor(cursor_factory=RealDictCursor)
         cur.execute(
             """ SELECT * FROM  answers
             """
         )
-        queryset_list = cur.fetchall()
+        query_list = cur.fetchall()
         con.close()
-        return queryset_list
+        return query_list
 
     def filter_by(self):
-        """
-        Select a column(s) from answer table
-        :return: list: queryset list
-        """
+        """ Selects a given column from answer table. """
         try:
             con = psycopg2.connect(**self.config)
             cur = con.cursor(cursor_factory=RealDictCursor)
             query = "SELECT * FROM answers WHERE answer_id={}"
             cur.execute(query.format(self.answer_id))
-            queryset_list = cur.fetchall()
+            query_list = cur.fetchall()
             con.close()
-            return queryset_list
+            return query_list
         except Exception as e:
             con.close()
             return []
@@ -78,9 +70,9 @@ class Answer:
             cur = con.cursor(cursor_factory=RealDictCursor)
             query = "SELECT user_id FROM answers WHERE answer_id=%s"
             cur.execute(query, self.answer_id)
-            queryset_list = cur.fetchall()
+            query_list = cur.fetchall()
             con.close()
-            return queryset_list
+            return query_list
         except Exception as e:
             return False
 
@@ -124,9 +116,7 @@ class Answer:
 
     def update_answer(self):
         """
-        Update an answer column
-        :return: bool:
-        """
+        Update an answer column in the answers table"""
         con = psycopg2.connect(**self.config)
         cur = con.cursor(cursor_factory=RealDictCursor)
         try:
@@ -153,9 +143,7 @@ class Question:
         self.user_id = data.get('user_id')
 
     def save(self):
-        """ Create a question record in questions table
-        :return: None or record values
-        """
+        """ Create a question record in questions table. """
         con = psycopg2.connect(**self.config)
         cur, response = con.cursor(cursor_factory=RealDictCursor), None
         try:
@@ -171,7 +159,7 @@ class Question:
 
     def query(self):
         """Query the data in question table :return: list: query set list"""
-        con, queryset_list = psycopg2.connect(**self.config), None
+        con, query_list = psycopg2.connect(**self.config), None
         cur = con.cursor(cursor_factory=RealDictCursor)
         try:
             if not self.q:
@@ -187,57 +175,57 @@ class Question:
                 query += " FROM questions WHERE  body LIKE %s OR title LIKE %s  "
                 query += " ORDER BY questions.created_at"
                 cur.execute(query, (self.q, self.q))
-            queryset_list = cur.fetchall()
+            query_list = cur.fetchall()
         except Exception as e:
             con.close()
             # print(e)
         con.close()
-        return queryset_list
+        return query_list
 
     def filter_by(self):
         """
         Selects a question by id
         
         """
-        con, queryset_list = psycopg2.connect(**self.config), None
+        con, query_list = psycopg2.connect(**self.config), None
         cur = con.cursor(cursor_factory=RealDictCursor)
         cur2 = con.cursor(cursor_factory=RealDictCursor)
 
         try:
             query = """ SELECT * FROM questions WHERE questions.question_id=%s ORDER BY questions.created_at"""
             cur.execute(query % self.question_id)
-            questions_queryset_list = cur.fetchall()
+            questions_query_list = cur.fetchall()
             cur2.execute("SELECT * FROM answers WHERE answers.question_id=%s" % self.question_id)
-            answers_queryset_list = cur2.fetchall()
-            queryset_list = {
-                'question': questions_queryset_list,
-                'answers': answers_queryset_list
+            answers_query_list = cur2.fetchall()
+            query_list = {
+                'question': questions_query_list,
+                'answers': answers_query_list
             }
         except Exception as e:
             # print(e)
             con.close()
         con.close()
-        return queryset_list
+        return query_list
 
     def filter_by_user(self):
         """
         Selects question for specific user:default filters by current logged in user
         :return: False if record is not found else query list of found record
         """
-        con, queryset_list = psycopg2.connect(**self.config), None
+        con, query_list = psycopg2.connect(**self.config), None
         cur = con.cursor(cursor_factory=RealDictCursor)
         try:
             cur.execute(
                 """ SELECT * FROM questions 
                     WHERE questions.user_id=""" + self.user_id + """ ORDER BY questions.created_at """
             )
-            questions_queryset_list = cur.fetchall()
-            queryset_list = {'question': questions_queryset_list}
+            questions_query_list = cur.fetchall()
+            query_list = {'question': questions_query_list}
         except Exception as e:
             # print(e)
             result = False
         con.close()
-        return queryset_list
+        return query_list
 
     def update(self):
         """
@@ -262,13 +250,13 @@ class Question:
         :return: bool: False if record is not found else True
         """
         con, exists = psycopg2.connect(**self.config), False
-        cur, queryset_list = con.cursor(cursor_factory=RealDictCursor), None
+        cur, query_list = con.cursor(cursor_factory=RealDictCursor), None
         try:
             query = "SELECT question_id, user_id FROM questions WHERE question_id=%s AND user_id=%s"
             cur.execute(query, (self.question_id, self.user_id))
-            queryset_list = cur.fetchall()
+            query_list = cur.fetchall()
             con.close()
-            exists = True if len(queryset_list) >= 1 else False
+            exists = True if len(query_list) >= 1 else False
         except Exception as e:
             # print(e)
             con.close()
@@ -308,33 +296,33 @@ class User:
         con = psycopg2.connect(**self.config)
         cur = con.cursor(cursor_factory=RealDictCursor)
         cur.execute("select username, email, user_id, created_at from {}".format(self.table))
-        queryset_list = cur.fetchall()
+        query_list = cur.fetchall()
         con.close()
-        return [item for item in queryset_list]
+        return [item for item in query_list]
 
     def filter_by(self):
-        con, queryset_list = psycopg2.connect(**self.config), None
+        con, query_list = psycopg2.connect(**self.config), None
         cur = con.cursor(cursor_factory=RealDictCursor)
         try:
             cur.execute("select username, email, user_id, created_at from {} WHERE user_id='{}'".format(self.table, self.user_id))
-            queryset_list = cur.fetchall()
+            query_list = cur.fetchall()
         except Exception as e:
             # print(e)
             con.close()
         con.close()
-        return queryset_list
+        return query_list
 
     def filter_by_email(self):
-        con, queryset_list = psycopg2.connect(**self.config), None
+        con, query_list = psycopg2.connect(**self.config), None
         cur = con.cursor(cursor_factory=RealDictCursor)
         try:
             cur.execute("select * from {} WHERE email='{}'".format(self.table, self.email))
-            queryset_list = cur.fetchall()
+            query_list = cur.fetchall()
         except Exception as e:
             # print(e)
             con.close()
         con.close()
-        return queryset_list
+        return query_list
 
     def update(self):
         """

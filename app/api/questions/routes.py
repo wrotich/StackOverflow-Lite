@@ -6,7 +6,7 @@ from ...helpers import jwt_required
 question_blueprint = Blueprint('questions', __name__)
 
 
-class CreateQuestionAPIView(MethodView):
+class CreateQuestionAPI(MethodView):
     """
     Create API Resource
     """
@@ -94,7 +94,7 @@ class CreateQuestionAPIView(MethodView):
         return make_response(jsonify(response_object)), 200
 
 
-class QuestionsListAPIView(MethodView):
+class QuestionsListAPI(MethodView):
     """ List API Resource """
     @jwt_required
     def get(self):
@@ -107,8 +107,8 @@ class QuestionsListAPIView(MethodView):
 
 
 # Define the API resources
-create_view = CreateQuestionAPIView.as_view('create_api')
-list_view = QuestionsListAPIView.as_view('list_api')
+create_view = CreateQuestionAPI.as_view('create_api')
+list_view = QuestionsListAPI.as_view('list_api')
 
 # Add Rules for API Endpoints
 question_blueprint.add_url_rule(
