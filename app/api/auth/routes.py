@@ -22,21 +22,13 @@ class RegisterAPI(MethodView):
                 'status': 'fail', 'errors': errors
             }
             return make_response(jsonify(response_object)), 401
-        try:
-            user = User(data).save()
-            auth_token = encode_auth_token(user.get('id')).decode()
-            response_object = {
-                'status': 'success',
-                'message': 'Successfully registered.',
-                'id': user.get('user_id'), 'auth_token': auth_token
-            }
-            return make_response(jsonify(response_object)), 201
-        except Exception as e:
-            print(e)
-            response_object = {
-                'status': 'fail', 'message': 'Some error occurred. Please try again.'
-            }
-            return make_response(jsonify(response_object)), 401
+        user = User(data).save()
+        response_object = {
+            'status': 'success',
+            'message': 'Successfully registered.',
+            'id': user.get('user_id')
+        }
+        return make_response(jsonify(response_object)), 201
 
     def delete(self, user_id=None):
         data = request.get_json(force=True)
