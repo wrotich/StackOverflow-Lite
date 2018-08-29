@@ -65,22 +65,33 @@ To install:
 # Challenge 3 - Setup API endpoints and secure them using JWT
 # Installation
 To install:
-- git clone https://github.com/winniejerop/StackOverflow-Lite.git
+- git clone https://github.com/winniejerop/StackOverflow-Lite.git -b challenge_3
 - cd StackOverflow-Lite
 - virtualenv venv
 - venv/Scripts/activate (Windows)
 - pip install requirements.txt
-- python run.py 
+- python manage.py 
+
+# Hosted on Heroku
+https://stackoverflow-lite-ch3.herokuapp.com/
+
+# Apiary Documentation
+https://stackoverflowlite12.docs.apiary.io/#
+
 
 # Api Endpoints
 POST /api/v1/auth/signup
 
 POST /api/v1/auth/login
 
+POST /api/v1/auth/logout
+
 GET /api/v1/questions 
 
-GET /api/v1/questions/001
+GET /api/v1/questions/1
 
-POST /api/v1/questions/001/answer
+POST /api/v1/questions/1/answer
 
-PUT /api/v1/questions/001/answers/<answerId>
+PUT /api/v1/questions/1/answers/1
+
+
