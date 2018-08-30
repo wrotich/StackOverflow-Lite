@@ -108,7 +108,7 @@ class QuestionModelTestCase(BaseTestCase):
         self.assertEqual(response.get_json()['status'], 'success')
 
     def test_delete_question_unexpectedly(self):
-        '''Tests deleting a question using a wrong way e.g unavailable question_id. '''
+        '''Tests deleting a question using a wrong way e.g no question_id. '''
         response = self.client.delete(
             '/api/v1/questions/None',
             headers={'Authorization': 'JWT ' + self.token}
