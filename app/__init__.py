@@ -2,9 +2,9 @@ from flask import Flask
 from .migrations.db import db
 
 
-def create_app(config_filename):
+def create_app(file):
     app = Flask(__name__)
-    app.config.from_object(config_filename)
+    app.config.from_object(file)
 
     with app.app_context():
         pass

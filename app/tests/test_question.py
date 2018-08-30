@@ -61,7 +61,7 @@ class QuestionModelTestCase(BaseTestCase):
             'body': {}
         }
         response = self.client.post(
-            '/api/v1/questions/', json=data,
+            '/api/v1/questions', json=data,
             headers={'Authorization': 'JWT ' + self.token}
         )
         self.assertEqual(response.status_code, 400)
@@ -75,7 +75,7 @@ class QuestionModelTestCase(BaseTestCase):
             'user': self.user_id
         }
         response = self.client.post(
-            '/api/v1/questions/', json=data,
+            '/api/v1/questions', json=data,
             headers={'Authorization': 'JWT ' + self.token}
         )
         self.assertEqual(response.status_code, 201)

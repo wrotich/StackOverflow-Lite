@@ -113,7 +113,7 @@ list_view = QuestionsListAPI.as_view('list_api')
 # Define the rule for posting a qestion
 # Add the rule to the blueprint
 question_blueprint.add_url_rule(
-    '/api/v1/questions/',
+    '/api/v1/questions',
     view_func=create_view,
     methods=['POST']
 )
@@ -147,4 +147,3 @@ question_blueprint.add_url_rule(
     view_func=list_view,
     methods=['GET']
 )
-

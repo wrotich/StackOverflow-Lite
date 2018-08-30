@@ -159,26 +159,13 @@ class Question:
 
     def query(self):
         """Query the data in question table :return: list: query set list"""
-        con, query_list = psycopg2.connect(**self.config), None
+        con = psycopg2.connect(**self.config)
         cur = con.cursor(cursor_factory=RealDictCursor)
-        try:
-            if not self.q:
-                cur.execute(
-                    " SELECT *,( SELECT count(*) FROM "
-                    "answers WHERE answers.question_id=questions.question_id ) as "
-                    "answers_count FROM questions "
-                    " ORDER BY questions.created_at DESC"
-                )
-            else:
-                query = "SELECT *, ( SELECT count(*) FROM answers WHERE "
-                query += " answers.question_id=questions.question_id ) as answers_count "
-                query += " FROM questions WHERE  body LIKE %s OR title LIKE %s  "
-                query += " ORDER BY questions.created_at"
-                cur.execute(query, (self.q, self.q))
-            query_list = cur.fetchall()
-        except Exception as e:
-            con.close()
-            # print(e)
+        cur.execute(
+            """ SELECT * FROM  questions
+            """
+        )
+        query_list = cur.fetchall()
         con.close()
         return query_list
 
