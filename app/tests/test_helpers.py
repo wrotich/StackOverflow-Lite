@@ -19,7 +19,8 @@ class HelpersTestCase(BaseTestCase):
     def test_invalid_email(self):
         '''Tests whether a wrong email address can be used.'''
         valid = valid_email('invalid-email')
-        self.assertEqual(valid, None)
+        self.assertEqual(valid,None)
+    
 
     def test_valid_email(self):
         '''Tests the normal and expected case.'''

@@ -1,9 +1,13 @@
-from flask import Flask
+from flask import Flask,redirect
 from .migrations.db import db
 
+app = Flask(__name__)
+
+@app.route('/')
+def home():
+    return redirect("https://stackoverflowlite12.docs.apiary.io/#reference", code=302)
 
 def create_app(file):
-    app = Flask(__name__)
     app.config.from_object(file)
 
     with app.app_context():
@@ -16,7 +20,6 @@ def create_app(file):
     configure_extensions()
 
     return app
-
 
 def configure_blueprints(app):
     """ Configure blueprints . """
