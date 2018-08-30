@@ -18,10 +18,11 @@ class UsersListAPIView(MethodView):
         return (jsonify(response_object)), 200
 
 
-# Define the API resources
+# Define the API resource
 comment_view = UsersListAPIView.as_view('user_api')
 
-# Add Rules for API Endpoints
+# Define the rule for fetching users
+# Add the rule to the blueprint
 users_blueprint.add_url_rule(
     '/api/v1/users/questions',
     view_func=comment_view,

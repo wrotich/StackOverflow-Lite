@@ -54,13 +54,12 @@ class QuestionModelTestCase(BaseTestCase):
         self.assertEqual(response.status_code, 404)
         self.assertEqual(response.get_json()['status'], 'fail')
 
-    def test_post_question_post_wrong_payload(self):
+    def test_post_question_using_wrong_payload(self):
         '''Test posting a question using wrong payload'''
         data = {
             'title': [],
             'body': {}
         }
-
         response = self.client.post(
             '/api/v1/questions/', json=data,
             headers={'Authorization': 'JWT ' + self.token}
@@ -75,7 +74,6 @@ class QuestionModelTestCase(BaseTestCase):
             'body': 'Test body',
             'user': self.user_id
         }
-
         response = self.client.post(
             '/api/v1/questions/', json=data,
             headers={'Authorization': 'JWT ' + self.token}

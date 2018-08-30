@@ -85,25 +85,32 @@ class AnswersListAPIView(MethodView):
 create_view = AnswersAPIView.as_view('create_api')
 list_view = AnswersListAPIView.as_view('list_api')
 
-# Add Rules for API Endpoints
+# Define the rule for posting an answer
+# Add the rule to the blueprint
 answers_blueprint.add_url_rule(
     '/api/v1/questions/<string:question_id>/answers',
     view_func=create_view,
     methods=['POST']
 )
 
+# Define the rule for updating an answer
+# Add the rule to the blueprint
 answers_blueprint.add_url_rule(
     '/api/v1/questions/<string:question_id>/answers/<string:answer_id>',
     view_func=create_view,
     methods=['PUT']
 )
 
+# Define the rule for fetching answers
+# Add the rule to the blueprint
 answers_blueprint.add_url_rule(
     '/api/v1/questions/answers',
     view_func=list_view,
     methods=['GET']
 )
 
+# Define the rule for fetching a single answer
+# Add the rule to the blueprint
 answers_blueprint.add_url_rule(
     '/api/v1/questions/answers/<string:answer_id>',
     view_func=list_view,

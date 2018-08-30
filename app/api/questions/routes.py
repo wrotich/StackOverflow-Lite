@@ -110,25 +110,38 @@ class QuestionsListAPI(MethodView):
 create_view = CreateQuestionAPI.as_view('create_api')
 list_view = QuestionsListAPI.as_view('list_api')
 
-# Add Rules for API Endpoints
+# Define the rule for posting a qestion
+# Add the rule to the blueprint
 question_blueprint.add_url_rule(
     '/api/v1/questions/',
     view_func=create_view,
     methods=['POST']
 )
-
+# Define the rule for deleting a qestion
+# Add the rule to the blueprint
 question_blueprint.add_url_rule(
     '/api/v1/questions/<string:question_id>',
     view_func=create_view,
     methods=['DELETE']
 )
 
+# Define the rule for Getting a single qestion
+# Add the rule to the blueprint
 question_blueprint.add_url_rule(
     '/api/v1/questions/<string:question_id>',
     view_func=create_view,
-    methods=['PUT', 'GET']
+    methods=['GET']
 )
 
+# Define the rule for updating a single qestion
+# Add the rule to the blueprint
+question_blueprint.add_url_rule(
+    '/api/v1/questions/<string:question_id>',
+    view_func=create_view,
+    methods=['PUT']
+)
+# Define the rule for fetching all qestions
+# Add the rule to the blueprint
 question_blueprint.add_url_rule(
     '/api/v1/questions/',
     view_func=list_view,

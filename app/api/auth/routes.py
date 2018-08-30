@@ -110,34 +110,47 @@ login_view = LoginAPI.as_view('login_api')
 user_view = UserListAPI.as_view('user_api')
 logout_view = LogoutAPI.as_view('logout_api')
 
-# Add Rules for API Endpoints
+# Define the rule for sign up
+# Add the rule to the blueprint
 auth_blueprint.add_url_rule(
     '/api/v1/auth/signup',
     view_func=registration_view,
     methods=['POST']
 )
 
-# Add Rules for API Endpoints
+# Define the rule for deleting a user
+# Add the rule to the blueprint
 auth_blueprint.add_url_rule(
     '/api/v1/auth/delete',
     view_func=registration_view,
     methods=['DELETE']
 )
+
+# Define the rule for login
+# Add the rule to the blueprint
 auth_blueprint.add_url_rule(
     '/api/v1/auth/login',
     view_func=login_view,
     methods=['POST']
 )
+
+# Define the rule for fetching all registered users
+# Add the rule to the blueprint
 auth_blueprint.add_url_rule(
     '/api/v1/auth/users',
     view_func=user_view,
     methods=['GET']
 )
+# Define the rule for fetching a single user
+# Add the rule to the blueprint
 auth_blueprint.add_url_rule(
     '/api/v1/auth/users/<string:user_id>',
     view_func=user_view,
     methods=['GET']
 )
+
+# Define the rule for logout
+# Add the rule to the blueprint
 auth_blueprint.add_url_rule(
     '/api/v1/auth/logout',
     view_func=logout_view,
