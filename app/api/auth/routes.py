@@ -1,8 +1,8 @@
 from flask import Blueprint, request, make_response, jsonify, session
 from flask.views import MethodView
 from flask_bcrypt import Bcrypt
-from ...models import User
-from ...helpers import jwt_required, encode_auth_token, validate_user_details
+from ...models import User, Tokens
+from ...helpers import jwt_required, encode_auth_token, decode_auth_token,validate_user_details
 
 b_crypt = Bcrypt()
 auth_blueprint = Blueprint('auth', __name__)
@@ -29,15 +29,6 @@ class RegisterAPI(MethodView):
             'id': user.get('user_id')
         }
         return make_response(jsonify(response_object)), 201
-
-    def delete(self, user_id=None):
-        data = request.get_json(force=True)
-        data['user_id'] = user_id
-        User(data).delete()
-        response_object = {
-            'status': 'success', 'message': 'User deleted successfully.',
-        }
-        return make_response(jsonify(response_object)), 200
 
 
 class LoginAPI(MethodView):
@@ -71,43 +62,36 @@ class LoginAPI(MethodView):
             return make_response(jsonify(response_object)), 500
 
 
-class UserListAPI(MethodView):
-    """ User List Api Resource """
-    @jwt_required
-    def get(self, user_id=None):
-        if user_id:
-            user = User({"user_id": user_id}).filter_by()
-            response_object = {'results': 'User not found', 'status': 'fail'}
-            try:
-                if len(user) < 1:
-                    return make_response(jsonify(response_object)), 404
-            except:
-                return make_response(jsonify(response_object)), 404
-            response_object = {
-                'results': user,
-                'status': 'success'
-            }
-            return (jsonify(response_object)), 200
-
-        response_object = {
-            'results': User().query(),
-            'status': 'success'
-        }
-        return (jsonify(response_object)), 200
-
-
 class LogoutAPI(MethodView):
-    """ Logout Resource """
+    """
+    Handles user Logout authentication
+    """
     def post(self):
         # get auth token
+        
+        
         auth_header = request.headers.get('Authorization')
-        return jsonify({}), 500
+        if auth_header:
+            auth_token = auth_header.split(" ")[0]
+        else:
+            auth_token = ''
+        if auth_token:
+            # resp = decode_auth_token(auth_token)
+            token = Tokens.__call__(auth_token)
+            token.save_auth_header()
+            res = {
+                'message': 'Successfully logged out.'
+            }
+            return make_response(jsonify(res)), 200
+        res = {
+                'message': 'You are logged out, login again'
+            }
+
 
 
 # Define the API resources
 registration_view = RegisterAPI.as_view('register_api')
 login_view = LoginAPI.as_view('login_api')
-user_view = UserListAPI.as_view('user_api')
 logout_view = LogoutAPI.as_view('logout_api')
 
 # Define the rule for sign up
@@ -132,21 +116,6 @@ auth_blueprint.add_url_rule(
     '/api/v1/auth/login',
     view_func=login_view,
     methods=['POST']
-)
-
-# Define the rule for fetching all registered users
-# Add the rule to the blueprint
-auth_blueprint.add_url_rule(
-    '/api/v1/auth/users',
-    view_func=user_view,
-    methods=['GET']
-)
-# Define the rule for fetching a single user
-# Add the rule to the blueprint
-auth_blueprint.add_url_rule(
-    '/api/v1/auth/users/<string:user_id>',
-    view_func=user_view,
-    methods=['GET']
 )
 
 # Define the rule for logout

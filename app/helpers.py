@@ -79,6 +79,10 @@ def valid_email(email):
     """  Validate email using regex. """
     return re.match(r'^.+@([?)[a-zA-Z0-9-.])+.([a-zA-Z]{2,3}|[0-9]{1,3})(]?)$', email)
 
+def valid_username(username):
+    """Validate username using regex"""
+    return re.match(r'[a-zA-Z0-9-.])([a-zA-Z]{2,3})', username)
+
 
 
 def validate_user_details(data):

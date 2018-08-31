@@ -9,6 +9,7 @@ app = create_app("config.BaseConfig")
 class BaseTestCase(unittest.TestCase):
 
     def setUp(self):
+        """This method sets up the testing environment"""
         self.client = app.test_client()
         self.data = {
             'username': 'Winnie',
@@ -23,5 +24,5 @@ class BaseTestCase(unittest.TestCase):
         self.user_id = str(response.get_json()['id'])
 
     def tearDown(self):
-        # method to invoke after each test.
+        """This method is invoked after every test"""
         pass

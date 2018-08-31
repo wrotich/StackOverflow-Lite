@@ -9,17 +9,6 @@ question = Question()
 
 class AnswersModelTestCase(BaseTestCase):
 
-    def signup_user(self):
-        """This method registers a test user."""
-        response = self.client.post('/api/v1/auth/register', json=self.data)
-        self.assertEqual(response.status_code, 201)
-        self.assertEqual(response.get_json()['status'], 'sucess')
-
-    def test_login(self):
-        '''Tests login using expected input'''
-        response = self.client.post('/api/v1/auth/login', json=self.data)
-        self.assertEqual(response.status_code, 200)
-
     def test_list_answers_unexpected(self):
         '''Tests listing answers incorrectly
         e.g trying to list without JWT authorization header'''

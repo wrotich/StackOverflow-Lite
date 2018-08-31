@@ -57,6 +57,11 @@ create_tables_commands = (
             ON UPDATE CASCADE ON DELETE CASCADE            
     )
     """,
+    """
+    CREATE TABLE IF NOT EXISTS tokens(
+        user_id SERIAL PRIMARY KEY,
+        token VARCHAR NOT NULL
+    )""",
 )
 
 migrations = create_tables_commands

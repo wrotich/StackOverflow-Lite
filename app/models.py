@@ -129,10 +129,6 @@ class Answer:
         con.close()
         return True
 
-    def delete(self):
-        pass
-
-
 
 class Question:
     def __init__(self, data={}):
@@ -214,45 +210,25 @@ class Question:
         con.close()
         return query_list
 
-    def update(self):
-        """
-        Update an question column
-        :return: bool:
-        """
-        con, result = psycopg2.connect(**self.config), True
-        cur = con.cursor(cursor_factory=RealDictCursor)
-        try:
-            query = "UPDATE questions SET title=%s, body=%s WHERE question_id=%s"
-            cur.execute(query, (self.title, self.body, self.question_id))
-            con.commit()
-        except Exception as e:
-            # print(e)
-            result = False
-        con.close()
-        return result
-
     def record_exists(self):
         """
-        checks whether a question was asked by the user
-        :return: bool: False if record is not found else True
+        checks whether the question exists
         """
         con, exists = psycopg2.connect(**self.config), False
         cur, query_list = con.cursor(cursor_factory=RealDictCursor), None
-        try:
-            query = "SELECT question_id, user_id FROM questions WHERE question_id=%s AND user_id=%s"
-            cur.execute(query, (self.question_id, self.user_id))
-            query_list = cur.fetchall()
-            con.close()
-            exists = True if len(query_list) >= 1 else False
-        except Exception as e:
-            # print(e)
-            con.close()
+        query = "SELECT title, body FROM questions WHERE title=%s AND body=%s"
+        cur.execute(query, (self.title, self.body))
+        query_list = cur.fetchall()
+        con.close()
+        if len(query_list) >= 1:
+            exists = True
+        else:
+            False
+        con.close()
         return exists
 
     def delete(self):
-        """ Delete a table records
-        :return: bool
-        """
+        """ Delete a table records. """
         con = psycopg2.connect(**self.config)
         cur = con.cursor(cursor_factory=RealDictCursor)
         try:
@@ -294,7 +270,6 @@ class User:
             cur.execute("select username, email, user_id, created_at from {} WHERE user_id='{}'".format(self.table, self.user_id))
             query_list = cur.fetchall()
         except Exception as e:
-            # print(e)
             con.close()
         con.close()
         return query_list
@@ -306,7 +281,6 @@ class User:
             cur.execute("select * from {} WHERE email='{}'".format(self.table, self.email))
             query_list = cur.fetchall()
         except Exception as e:
-            # print(e)
             con.close()
         con.close()
         return query_list
@@ -323,7 +297,6 @@ class User:
             cur.execute(query, (self.email, self.username, self.user_id))
             con.commit()
         except Exception as e:
-            # print(e)
             result = False
         con.close()
         return result
@@ -337,7 +310,6 @@ class User:
             con.commit()
             con.close()
         except Exception as e:
-            # print(e)
             con.close()
             return False
         return True
@@ -351,7 +323,33 @@ class User:
             con.commit()
             response = cur.fetchone()
         except Exception as e:
-            # print(e)
             con.close()
         con.close()
         return response
+
+
+class Tokens:
+    def __init__(self, token):
+        self.token = token
+        self.config = db_config()
+
+    @staticmethod
+    def verify_auth_header(self):
+        '''query db to  check if token exist. '''
+        con = psycopg2.connect(**self.config)
+        cur = con.cursor(cursor_factory=RealDictCursor)
+        query = 'SELECT token FROM tokens WHERE token =%s'
+        cur.execute(query, (str(self.token),))
+        expired_token = cur.fetchone()
+        if  expired_token:
+            return True
+        return False
+
+    def save_auth_header(self):
+        ''' persit token '''
+        con = psycopg2.connect(**self.config)
+        cur = con.cursor(cursor_factory=RealDictCursor)
+        query = 'INSERT INTO tokens (token) VALUES (%s)'
+        cur.execute(query, (self.token,))
+        con.commit()
+

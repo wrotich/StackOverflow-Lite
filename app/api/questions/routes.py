@@ -13,18 +13,17 @@ class CreateQuestionAPI(MethodView):
     @jwt_required
     def get(self, question_id):
         response = Question({'question_id': question_id}).filter_by()
-        if not response:
+        if not response or not response['question']:
             response_object = {
-                'status': 'fail',
                 'results': 'Question Not found'
             }
             return make_response(jsonify(response_object)), 404
-
-        response_object = {
-            'status': 'success',
-            'results': response
-        }
-        return make_response(jsonify(response_object)), 200
+        else:
+            response_object = {
+                'results': response
+            }
+            return make_response(jsonify(response_object)), 200
+            
 
     @jwt_required
     def post(self):
@@ -34,35 +33,16 @@ class CreateQuestionAPI(MethodView):
         row = Question(data).save()
         if row:
             response_object = {
-                'status': 'success',
                 'results': row
             }
             return make_response(jsonify(response_object)), 201
-
+        else:
+            response_object = Question.record_exists
+            res = {'message': 'Question already asked'}
+            return make_response(jsonify(res)), 401
+            
         response_object = {
-            'status': 'fail',
-            'message': 'Bad request. Please try again.'
-        }
-        return make_response(jsonify(response_object)), 400
-
-    """ UPDATE QUESTION """
-    @jwt_required
-    def put(self, question_id=None):
-        # get the post data
-        data = request.get_json(force=True)
-        data['question_id'] = question_id
-        data['user_id'] = session.get('user_id')
-        result = Question(data).update()
-        if result:
-            response_object = {
-                'status': 'success',
-                'results': data
-            }
-            return make_response(jsonify(response_object)), 201
-
-        response_object = {
-            'status': 'fail',
-            'message': 'Bad request. Please try again.'
+            'message': 'Could not post the question. Please try again.'
         }
         return make_response(jsonify(response_object)), 400
 
@@ -74,16 +54,14 @@ class CreateQuestionAPI(MethodView):
         response = Question(data).delete()
         if response == 401:
             response_object = {
-                'status': 'fail',
                 'message': 'Unauthorized, You cannot delete this question!.'
             }
             return make_response(jsonify(response_object)), 401
         if response == 404:
-            response_object = {'status': 'fail', 'message': 'Some error occurred. Question Not Found!.'}
+            response_object = {'message': 'Some error occurred. Question Not Found!.'}
             return make_response(jsonify(response_object)), 404
         if not response:
             response_object = {
-                'status': 'fail',
                 'message': 'Some error occurred. Please try again.'
             }
             return make_response(jsonify(response_object)), 400
@@ -101,7 +79,7 @@ class QuestionsListAPI(MethodView):
         data = dict()
         data['user_id'] = session.get('user_id')
         response_object = {
-            'results': Question({'q': request.args.get('q')}).query(), 'status': 'success'
+            'results': Question({'q': request.args.get('q')}).query()
         }
         return (jsonify(response_object)), 200
 
