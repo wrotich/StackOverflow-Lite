@@ -7,11 +7,11 @@ app/models.pyc
 run.pyc
 tests/__init__.pyc
 .vscode
-.venv
+venv
 .cache
 .coverage
-.app/helpers.pyc
-.app/migrations/__init__.pyc
-.app/migrations/db.pyc
-.app/migrations/sql_setup.pyc
-.config.pyc
+app/helpers.pyc
+app/migrations/__init__.pyc
+app/migrations/db.pyc
+app/migrations/sql_setup.pyc
+config.pyc
