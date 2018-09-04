@@ -15,13 +15,14 @@ class BaseTestCase(unittest.TestCase):
             'username': 'Winnie',
             'email': 'winniecherop@gmail.com',
             'password': 'password',
-            'database': BaseConfig.TEST_DB
+            'database': BaseConfig.TEST_DB,
+            'user_id':'id'
         }
-        # """ Login to get a JWT token """
-        # self.client.post('/api/v1/auth/signup', json=self.data)
-        # response = self.client.post('/api/v1/auth/login', json=self.data)
-        # self.token = response.get_json().get('auth_token')
-        # self.user_id = str(response.get_json()['id'])
+        """ Login to get a JWT token """
+        self.client.post('/api/v1/auth/signup', json=self.data)
+        response = self.client.post('/api/v1/auth/login', json=self.data)
+        self.token = response.get_json().get('auth_token')
+        self.user_id = str(response.get_json()['id'])
 
     def tearDown(self):
         """This method is invoked after every test"""
