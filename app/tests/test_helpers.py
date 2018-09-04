@@ -29,7 +29,7 @@ class HelpersTestCase(BaseTestCase):
 
     def test_user_validation(self):
         """ Tests the validation of user details """
-        data = {"email": "", "password": "", "username": ""}
+        data = {"email": "", 'password': ''}
         user = validate_user_details(data)
         assert user.get('email') == 'Invalid email. Please enter a valid email'
 

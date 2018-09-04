@@ -352,3 +352,4 @@ class Tokens:
         query = 'INSERT INTO tokens (token) VALUES (%s)'
         cur.execute(query, (self.token,))
         con.commit()
+

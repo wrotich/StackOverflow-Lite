@@ -81,15 +81,13 @@ def valid_email(email):
 
 def valid_username(username):
     """Validate username using regex"""
-    return re.match(r'^([a-zA-Z0-9-.])([a-zA-Z]{2,3})$', username)
+    return re.match(r'[a-zA-Z0-9-.])([a-zA-Z]{2,3})', username)
 
 
 
 def validate_user_details(data):
     '''Handles the validation of user details'''
     errors = {}
-    if not valid_username(data.get('username')):
-        errors['username'] = 'Invalid Username. Please enter a valid username'
     if not valid_email(data.get('email')):
         errors['email'] = 'Invalid email. Please enter a valid email'
     if not data.get('email'):
