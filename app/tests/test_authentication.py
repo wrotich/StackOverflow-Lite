@@ -11,7 +11,7 @@ class AuthApiTestCase(BaseTestCase):
         self.assertEqual(response.status_code, 201)
         self.assertEqual(response.get_json()['status'], 'sucess')
 
-    def test_auth_signup_unexpected_case(self):
+    def test_auth_signup_using_wrong_input(self):
         '''Tests signing up using wrong input e.g wrong email address.'''
         response = self.client.post('/api/v1/auth/signup', json=self.data)
         self.assertEqual(response.status_code, 401)
@@ -36,7 +36,7 @@ class AuthApiTestCase(BaseTestCase):
         response = self.client.post('/api/v1/auth/login', json=data)
         self.assertEqual(response.status_code, 404)
 
-    def test_login_unexpected_input(self):
+    def test_login_wrong_email(self):
         '''Tests login using unexpected input'''
         data = self.data
         data['email'] = 'wrong emal'
