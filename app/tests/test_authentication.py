@@ -33,7 +33,7 @@ class AuthApiTestCase(BaseTestCase):
     def test_login_unavailable_user(self):
         '''Tests login using unavailable user'''
         data = self.data
-        data['email'] = 'wrong emal'
+        data['email'] = 'wrong email'
         response = self.client.post('/api/v1/auth/login', json=data)
         self.assertEqual(response.status_code, 404)
 
