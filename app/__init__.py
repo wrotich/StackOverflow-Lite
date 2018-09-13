@@ -3,9 +3,9 @@ from .migrations.db import db
 
 app = Flask(__name__)
 
-@app.route('/')
-def home():
-    return redirect("https://stackoverflowlite12.docs.apiary.io/#reference", code=302)
+# @app.route('/')
+#def home():
+    #return redirect("https://stackoverflowlite12.docs.apiary.io/#reference", code=302)
 
 def create_app(file):
     app.config.from_object(file)

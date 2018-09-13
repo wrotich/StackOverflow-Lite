@@ -17,18 +17,20 @@ class RegisterAPI(MethodView):
         data['user'] = User(data).filter_by_email()
         # check if user already exists
         errors = validate_user_details(data)
-        if len(errors) > 0:
-            response_object = {
-                'status': 'fail', 'errors': errors
-            }
-            return make_response(jsonify(response_object)), 401
         user = User(data).save()
+        if len(errors) < 0:
+            user = User(data).save()
+            response_object = {
+                'status': 'success',
+                'message': 'Successfully registered.',
+                'id': user.get('user_id')
+            }
+            return make_response(jsonify(response_object)), 201
         response_object = {
-            'status': 'success',
-            'message': 'Successfully registered.',
-            'id': user.get('user_id')
+            'status': 'fail', 'errors': errors
         }
-        return make_response(jsonify(response_object)), 201
+        return make_response(jsonify(response_object)), 401
+    
 
 
 class LoginAPI(MethodView):
@@ -68,8 +70,7 @@ class LogoutAPI(MethodView):
     """
     def post(self):
         # get auth token
-        
-        
+
         auth_header = request.headers.get('Authorization')
         if auth_header:
             auth_token = auth_header.split(" ")[0]

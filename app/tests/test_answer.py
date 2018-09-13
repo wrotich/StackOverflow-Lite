@@ -9,7 +9,7 @@ question = Question()
 
 class AnswersModelTestCase(BaseTestCase):
 
-    def test_list_answers_unexpected(self):
+    def test_list_answers_without_token(self):
         '''Tests listing answers incorrectly
         e.g trying to list without JWT authorization header'''
         response = self.client.get(
@@ -17,7 +17,7 @@ class AnswersModelTestCase(BaseTestCase):
         )
         self.assertEqual(response.status_code, 401)
 
-    def test_list_answers(self):
+    def test_list_answers_with_token(self):
         '''Tests listing answers correctly'''
         response = self.client.get(
             '/api/v1/questions/answers',
