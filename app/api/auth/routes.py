@@ -7,7 +7,6 @@ from ...helpers import jwt_required, encode_auth_token, decode_auth_token,valida
 b_crypt = Bcrypt()
 auth_blueprint = Blueprint('auth', __name__)
 
-
 class RegisterAPI(MethodView):
     """ User Signup API Resource """
     def post(self):
@@ -17,20 +16,18 @@ class RegisterAPI(MethodView):
         data['user'] = User(data).filter_by_email()
         # check if user already exists
         errors = validate_user_details(data)
-        user = User(data).save()
-        if len(errors) < 0:
-            user = User(data).save()
+        if len(errors) > 0:
             response_object = {
-                'status': 'success',
-                'message': 'Successfully registered.',
-                'id': user.get('user_id')
+                'status': 'fail', 'errors': errors
             }
-            return make_response(jsonify(response_object)), 201
+            return make_response(jsonify(response_object)), 401
+        user = User(data).save()
         response_object = {
-            'status': 'fail', 'errors': errors
+            'status': 'success',
+            'message': 'Successfully registered.',
+            'id': user.get('user_id')
         }
-        return make_response(jsonify(response_object)), 401
-    
+        return make_response(jsonify(response_object)), 201
 
 
 class LoginAPI(MethodView):

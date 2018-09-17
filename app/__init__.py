@@ -1,7 +1,9 @@
 from flask import Flask,redirect
 from .migrations.db import db
+from flask_cors import CORS
 
 app = Flask(__name__)
+CORS(app, supports_credentials=True)
 
 # @app.route('/')
 #def home():

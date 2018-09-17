@@ -97,7 +97,7 @@ def validate_user_details(data):
     return errors
 
 
-def validate_login(data):
-    '''Validates whether a user can login'''
-    errors = {}
-    return errors
+#def validate_login(data):
+    #'''Validates whether a user can login'''
+    #errors = {}
+    #return errors
