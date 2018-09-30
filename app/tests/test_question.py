@@ -37,7 +37,7 @@ class QuestionModelTestCase(BaseTestCase):
     def test_fetch_a_question_correct_id(self):
         '''Tests fetching a question using a correct input. '''
         response = self.client.get(
-            '/api/v1/questions/1',
+            '/api/v1/questions/917',
             headers={'Authorization': 'JWT ' + self.token}
         )
         self.assertEqual(response.status_code, 200)
@@ -93,12 +93,12 @@ class QuestionModelTestCase(BaseTestCase):
     def test_delete_question(self):
         '''Tests deleting a question using a predefined way e.g available question_id.'''
         self.test_post_question()
+        question_id = self.data.get('question_id')
         response = self.client.delete(
-            '/api/v1/questions/'+str(self.data.get('question_id')),
+            '/api/v1/questions/'+str(question_id),
             headers={'Authorization': 'JWT ' + self.token}
         )
         self.assertEqual(response.status_code, 400)
-
 
 if __name__ == '__main__':
     unittest.main()

@@ -52,26 +52,27 @@ class CreateQuestionAPI(MethodView):
         data = dict()
         data['user_id'], data['question_id'] = session.get('user_id'), question_id
         response = Question(data).delete()
-        if response == 401:
+        if response == 200:
             response_object = {
-                'message': 'Unauthorized, You cannot delete this question!.'
+            'status': 'success',
+            'message': 'Question deleted successfully'
             }
-            return make_response(jsonify(response_object)), 401
-        if response == 404:
-            response_object = {'message': 'Some error occurred. Question Not Found!.'}
-            return make_response(jsonify(response_object)), 404
-        if not response:
+            return make_response(jsonify(response_object)), 200
+        
+        else:
+            if response == 404:
+                response_object = {
+                'message': 'Unauthorized, You cannot delete this question!.'}
+                return make_response(jsonify(response_object)), 404
+        # if response == 404:
+        #     response_object = {'message': 'Some error occurred. Question Not Found!.'}
+        #     return make_response(jsonify(response_object)), 404
+        # if not response:
             response_object = {
                 'message': 'Some error occurred. Please try again.'
             }
             return make_response(jsonify(response_object)), 400
-        response_object = {
-            'status': 'success',
-            'message': 'Question deleted successfully'
-        }
-        return make_response(jsonify(response_object)), 200
-
-
+        
 class QuestionsListAPI(MethodView):
     """ List API Resource """
     @jwt_required
@@ -83,10 +84,21 @@ class QuestionsListAPI(MethodView):
         }
         return (jsonify(response_object)), 200
 
+class SearchResultAPI(MethodView):
+    """List questions according to search"""
+    @jwt_required
+    def get(self):
+        data = dict()
+        data['user_id'] = session.get('user_id')
+        response_object = {
+            'results': Question({'q':request.args.get('q')}).single_query
+        }
+        return (jsonify(response_object)), 200
 
 # Define the API resources
 create_view = CreateQuestionAPI.as_view('create_api')
-list_view = QuestionsListAPI.as_view('list_api')
+list_view1 = QuestionsListAPI.as_view('list_api')
+list_view2 = SearchResultAPI.as_view('list_result_api')
 
 # Define the rule for posting a qestion
 # Add the rule to the blueprint
@@ -98,7 +110,7 @@ question_blueprint.add_url_rule(
 # Define the rule for deleting a qestion
 # Add the rule to the blueprint
 question_blueprint.add_url_rule(
-    '/api/v1/questions/<string:question_id>',
+    '/api/v1/questions/<question_id>',
     view_func=create_view,
     methods=['DELETE']
 )
@@ -106,7 +118,7 @@ question_blueprint.add_url_rule(
 # Define the rule for Getting a single qestion
 # Add the rule to the blueprint
 question_blueprint.add_url_rule(
-    '/api/v1/questions/<string:question_id>',
+    '/api/v1/questions/<question_id>',
     view_func=create_view,
     methods=['GET']
 )
@@ -122,6 +134,15 @@ question_blueprint.add_url_rule(
 # Add the rule to the blueprint
 question_blueprint.add_url_rule(
     '/api/v1/questions/',
-    view_func=list_view,
+    view_func=list_view1,
     methods=['GET']
 )
+
+# Define the rule for fetching all qestions during search
+# Add the rule to the blueprint
+question_blueprint.add_url_rule(
+    '/api/v1/questions/results/',
+    view_func=list_view2,
+    methods=['GET']
+)
+

@@ -11,7 +11,7 @@ class Answer:
         self.answer_body = data.get('answer_body')
         self.question_id = data.get('question_id')
         self.answer_id = data.get('answer_id')
-        self.accepted = data.get('accepted')
+       
         self.user_id = data.get('user_id')
 
     def save(self):
@@ -165,6 +165,33 @@ class Question:
         con.close()
         return query_list
 
+    def question_submitter(self):
+        """Query the data in the questions table: return the user id 
+        and the username of the questions uthor"""
+        con = psycopg2.connect(**self.config)
+        try:
+            cur = con.cursor(cursor_factory=RealDictCursor)
+            quest = " SELECT question_id user_id FROM questions WHERE question_id = %s AND user_id = %s"
+            cur.execute(quest,(self.question_id, self.user_id))
+            return cur.fetchall
+        except Exception as e:
+            print(e)
+        con.close()
+        return False
+      
+    def single_query(self):
+        """Query the data in the questions table to return a list of questions 
+        similar to the characters on the search bar"""
+        con = psycopg2.connect(**self.config)
+        cur = con.cursor(curseor_factory=RealDictCursor)
+        cur.execute(
+            """ SELECT * from questions WHERE questions.body LIKE '%s' OR questions.title LIKE '%s';
+            """
+        )
+        search_result = cur.fetchall()
+        con.close
+        return search_result
+
     def filter_by(self):
         """
         Selects a question by id
@@ -180,8 +207,10 @@ class Question:
             questions_query_list = cur.fetchall()
             cur2.execute("SELECT * FROM answers WHERE answers.question_id=%s" % self.question_id)
             answers_query_list = cur2.fetchall()
+            user={}
             query_list = {
                 'question': questions_query_list,
+                'user':user,
                 'answers': answers_query_list
             }
         except Exception as e:
@@ -209,10 +238,26 @@ class Question:
             result = False
         con.close()
         return query_list
+    
+    def available_question(self):
+        """checks whether a question exists
+        :return: bool: False if record is not found else True
+        """
+        con, exists = psycopg2.connect(**self.config), False
+        cur, queryset_list = con.cursor(cursor_factory=RealDictCursor), None
+        try:
+            query = "SELECT question_id, user_id FROM questions WHERE question_id='{}'"
+            cur.execute(query.format(self.question_id))
+            queryset_list = cur.fetchall()
+            con.close()
+            exists = True if len(queryset_list) >= 1 else False
+        except Exception as e:
+            print(e)
+        return exists
 
     def record_exists(self):
         """
-        checks whether the question exists
+        checks whether a given question was asked by a user
         """
         con, exists = psycopg2.connect(**self.config), False
         cur, query_list = con.cursor(cursor_factory=RealDictCursor), None

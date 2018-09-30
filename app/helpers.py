@@ -21,22 +21,23 @@ def jwt_required(f):
             auth_header = request.headers.get('Authorization').split(' ')[-1]
         except Exception as e:
             return make_response(jsonify({"message": 'Unauthorized. Please login'})), 401
-        result = decode_auth_token(auth_header)
+        resp = decode_auth_token(auth_header)
         try:
-            if int(result):
+            if int(resp):
                 pass
         except Exception as e:
-            return make_response(jsonify({"message": result})), 401
+            return make_response(jsonify({"message": resp})), 401
         return f(*args, **kwargs)
     return decorated_function
 
 
-def encode_auth_token(user_id):
+def encode_auth_token(user_id, username=None):
     """ Encodes a payload to generate JWT Token. """
     payload = {
         'exp': datetime.datetime.utcnow() + datetime.timedelta(days=10),
         'iat': datetime.datetime.utcnow(),
-        'sub': user_id
+        'sub': user_id,
+        'username': username
     }
     return jwt.encode(
         payload,
@@ -62,12 +63,12 @@ def db_config(database_uri=None):
     if os.environ.get('DATABASE_URL'):
         database_uri = os.environ.get('DATABASE_URL')
 
-    result = urlparse(database_uri)
+    resp = urlparse(database_uri)
     config = {
-        'database': result.path[1:],
-        'user': result.username,
-        'password': result.password,
-        'host': result.hostname
+        'database': resp.path[1:],
+        'user': resp.username,
+        'password': resp.password,
+        'host': resp.hostname
     }
 
     if os.environ.get('APP_SETTINGS') == 'TESTING':
