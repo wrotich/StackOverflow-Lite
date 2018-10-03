@@ -52,26 +52,27 @@ class CreateQuestionAPI(MethodView):
         data = dict()
         data['user_id'], data['question_id'] = session.get('user_id'), question_id
         response = Question(data).delete()
-        if response == 200:
+        if response == 401:
             response_object = {
-            'status': 'success',
-            'message': 'Question deleted successfully'
+                'status': 'fail',
+                'message': 'Unauthorized, You cannot delete this question!.'
             }
-            return make_response(jsonify(response_object)), 200
-        
-        else:
-            if response == 404:
-                response_object = {
-                'message': 'Unauthorized, You cannot delete this question!.'}
-                return make_response(jsonify(response_object)), 404
-        # if response == 404:
-        #     response_object = {'message': 'Some error occurred. Question Not Found!.'}
-        #     return make_response(jsonify(response_object)), 404
-        # if not response:
+            return make_response(jsonify(response_object)), 401
+        if response == 404:
+            response_object = {'status': 'fail', 'message': 'Some error occurred. Question Not Found!.'}
+            return make_response(jsonify(response_object)), 404
+        if not response:
             response_object = {
+                'status': 'fail',
                 'message': 'Some error occurred. Please try again.'
             }
             return make_response(jsonify(response_object)), 400
+        response_object = {
+            'status': 'success',
+            'message': 'Question deleted successfully'
+        }
+        return make_response(jsonify(response_object)), 200
+
         
 class QuestionsListAPI(MethodView):
     """ List API Resource """

@@ -273,7 +273,9 @@ class Question:
         return exists
 
     def delete(self):
-        """ Delete a table records. """
+        """ Delete a table records
+        :return: bool
+        """
         con = psycopg2.connect(**self.config)
         cur = con.cursor(cursor_factory=RealDictCursor)
         try:
