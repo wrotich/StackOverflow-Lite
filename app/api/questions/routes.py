@@ -85,6 +85,16 @@ class QuestionsListAPI(MethodView):
         }
         return (jsonify(response_object)), 200
 
+class UserQuestionsAPI(MethodView):
+    """ Lists the questions that are posted by a specific user"""
+    def get(self):
+        data = dict()
+        data['user_id'] = session.get('user_id')
+        response_object = {
+            'results': Question({'q': request.args.get('q')}).filter_by_user()
+        }
+        return (jsonify(response_object)), 200
+
 class SearchResultAPI(MethodView):
     """List questions according to search"""
     @jwt_required
@@ -100,6 +110,7 @@ class SearchResultAPI(MethodView):
 create_view = CreateQuestionAPI.as_view('create_api')
 list_view1 = QuestionsListAPI.as_view('list_api')
 list_view2 = SearchResultAPI.as_view('list_result_api')
+list_view3 = UserQuestionsAPI.as_view('list_user_questions')
 
 # Define the rule for posting a qestion
 # Add the rule to the blueprint
@@ -139,11 +150,19 @@ question_blueprint.add_url_rule(
     methods=['GET']
 )
 
-# Define the rule for fetching all qestions during search
+# Define the rule for fetching all questions during search
 # Add the rule to the blueprint
 question_blueprint.add_url_rule(
     '/api/v1/questions/results/',
     view_func=list_view2,
+    methods=['GET']
+)
+
+# Define the rule for fetching all user's questions 
+# Add the rule to the blueprint
+question_blueprint.add_url_rule(
+    '/api/v1/questions/user/',
+    view_func=list_view3,
     methods=['GET']
 )
 
