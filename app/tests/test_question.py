@@ -37,7 +37,7 @@ class QuestionModelTestCase(BaseTestCase):
     def test_fetch_a_question_correct_id(self):
         '''Tests fetching a question using a correct input. '''
         response = self.client.get(
-            '/api/v1/questions/34',
+            '/api/v1/questions/1',
             headers={'Authorization': 'JWT ' + self.token}
         )
         self.assertEqual(response.status_code, 200)

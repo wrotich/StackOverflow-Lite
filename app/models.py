@@ -231,12 +231,14 @@ class Question:
                 """ SELECT * FROM questions 
                     WHERE questions.user_id=""" + self.user_id + """ ORDER BY questions.created_at """
             )
+            print(self.user_id)
             questions_query_list = cur.fetchall()
             query_list = {'question': questions_query_list}
         except Exception as e:
             # print(e)
             result = False
         con.close()
+        print(query_list)
         return query_list
     
     def available_question(self):

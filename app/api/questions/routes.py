@@ -91,7 +91,7 @@ class UserQuestionsAPI(MethodView):
         data = dict()
         data['user_id'] = session.get('user_id')
         response_object = {
-            'results': Question({'q': request.args.get('q')}).filter_by_user()
+            'results': Question(data).filter_by_user()
         }
         return (jsonify(response_object)), 200
 
