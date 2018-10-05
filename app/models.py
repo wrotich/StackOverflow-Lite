@@ -11,7 +11,6 @@ class Answer:
         self.answer_body = data.get('answer_body')
         self.question_id = data.get('question_id')
         self.answer_id = data.get('answer_id')
-       
         self.user_id = data.get('user_id')
 
     def save(self):
@@ -148,7 +147,7 @@ class Question:
             con.commit()
             response = cur.fetchone()
         except Exception as e:
-            # print(e)
+            print(e)
             con.close()
         con.close()
         return response
@@ -207,10 +206,8 @@ class Question:
             questions_query_list = cur.fetchall()
             cur2.execute("SELECT * FROM answers WHERE answers.question_id=%s" % self.question_id)
             answers_query_list = cur2.fetchall()
-            user={}
             query_list = {
                 'question': questions_query_list,
-                'user':user,
                 'answers': answers_query_list
             }
         except Exception as e:

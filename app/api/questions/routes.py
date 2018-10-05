@@ -87,6 +87,7 @@ class QuestionsListAPI(MethodView):
 
 class UserQuestionsAPI(MethodView):
     """ Lists the questions that are posted by a specific user"""
+    @jwt_required
     def get(self):
         data = dict()
         data['user_id'] = session.get('user_id')

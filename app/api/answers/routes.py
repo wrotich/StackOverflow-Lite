@@ -56,7 +56,6 @@ class AnswersAPIView(MethodView):
         }
         return make_response(jsonify(response_object)), 400
 
-
 class AnswersListAPIView(MethodView):
     """
     List API Resource
@@ -99,7 +98,7 @@ answers_blueprint.add_url_rule(
     '/api/v1/questions/<string:question_id>/answers/<string:answer_id>',
     view_func=create_view,
     methods=['PUT']
-    #
+    
 )
 
 # Define the rule for fetching answers
