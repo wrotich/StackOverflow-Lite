@@ -29,7 +29,7 @@ class Answer:
         return response
 
     def query(self):
-        """ Fetch all records from a answers table. """
+        """ Fetch all records from answers table. """
         con = psycopg2.connect(**self.config)
         cur = con.cursor(cursor_factory=RealDictCursor)
         cur.execute(
@@ -47,6 +47,20 @@ class Answer:
             cur = con.cursor(cursor_factory=RealDictCursor)
             query = "SELECT * FROM answers WHERE answer_id={}"
             cur.execute(query.format(self.answer_id))
+            query_list = cur.fetchall()
+            con.close()
+            return query_list
+        except Exception as e:
+            con.close()
+            return []
+
+    def filter_by_question_id(self):
+        """ Selects a given column from answer table. """
+        try:
+            con = psycopg2.connect(**self.config)
+            cur = con.cursor(cursor_factory=RealDictCursor)
+            query = "SELECT * FROM answers WHERE question_id={}"
+            cur.execute(query.format(self.question_id))
             query_list = cur.fetchall()
             con.close()
             return query_list

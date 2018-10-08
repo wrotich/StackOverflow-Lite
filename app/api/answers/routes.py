@@ -79,10 +79,31 @@ class AnswersListAPIView(MethodView):
         response_object = {'results': Answer(data).query(), 'status': 'success'}
         return (jsonify(response_object)), 200
 
+class ListQuestionAnswersView(MethodView):
+    """List all the answers of a specific question"""
+    @jwt_required
+    def get(self,question_id):
+        data = dict()
+        data['question_id'] = question_id
+        answers = Answer(data).filter_by_question_id()
+        print(answers)
+        if len(answers) <1:
+            response_object = {
+                'results': 'No answers posted yet'
+            }
+            return make_response(jsonify(response_object)),404
+        response_object = {
+        'results':answers, 'status':'success'
+        }
+        return (jsonify(response_object)),200
+        # response_object = {'results':Answer(data).query(),'status':'success'}
+        # return (jsonify(response_object)), 200
+
 
 # Define the API resources
 create_view = AnswersAPIView.as_view('create_api')
 list_view = AnswersListAPIView.as_view('list_api')
+list_view1 = ListQuestionAnswersView.as_view('list_api_answers')
 
 # Define the rule for posting an answer
 # Add the rule to the blueprint
@@ -114,5 +135,13 @@ answers_blueprint.add_url_rule(
 answers_blueprint.add_url_rule(
     '/api/v1/questions/answers/<string:answer_id>',
     view_func=list_view,
+    methods=['GET']
+)
+
+# Define the rule for fetching answers for a single question
+# Add the rule to the blueprint
+answers_blueprint.add_url_rule(
+    '/api/v1/question/<string:question_id>/answers',
+    view_func=list_view1,
     methods=['GET']
 )
