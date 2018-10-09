@@ -99,7 +99,7 @@ class Answer:
                 response = 200 if self.update_answer() else 304
                 return response
 
-            # current user is question author
+            # Accept answer if current user is question author
             elif int(question_author) == int(self.user_id):
                 # mark it as accepted
                 response = self.update_accept_field()
@@ -274,15 +274,11 @@ class Question:
         """
         con, exists = psycopg2.connect(**self.config), False
         cur, query_list = con.cursor(cursor_factory=RealDictCursor), None
-        query = "SELECT title, body FROM questions WHERE title=%s AND body=%s"
-        cur.execute(query, (self.title, self.body))
+        query = "SELECT * FROM questions WHERE question_id=%s"
+        cur.execute(query, (self.question_id))
         query_list = cur.fetchall()
         con.close()
-        if len(query_list) >= 1:
-            exists = True
-        else:
-            False
-        con.close()
+        exists = True if len(query_list) > 0 else False
         return exists
 
     def delete(self):
@@ -292,12 +288,12 @@ class Question:
         con = psycopg2.connect(**self.config)
         cur = con.cursor(cursor_factory=RealDictCursor)
         try:
-            exist = self.filter_by()['question']
-            if not len(exist) > 0:
-                return 404
+            # exist = self.filter_by()['question']
+            # if not len(exist) > 0:
+            #     return 404
             if not self.record_exists():
-                return 401
-            cur.execute("DELETE from {} WHERE {}= '{}'".format(self.table, 'question_id', self.question_id))
+                return 404
+            cur.execute("DELETE from {} WHERE {}= {}".format(self.table, 'question_id', self.question_id))
             con.commit()
         except Exception as e:
             # print(e)
@@ -305,6 +301,7 @@ class Question:
             return False
         con.close()
         return True
+
 class User:
     def __init__(self, data={}):
         self.config = db_config()

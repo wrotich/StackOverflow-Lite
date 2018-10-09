@@ -39,7 +39,7 @@ class AnswersAPIView(MethodView):
                 'status': 'fail',
                 'message': 'Please provide correct answer and question id'
             }
-            return make_response(jsonify(response_object)), 400
+        return make_response(jsonify(response_object)), 400
 
     @jwt_required
     def post(self, question_id=None):
