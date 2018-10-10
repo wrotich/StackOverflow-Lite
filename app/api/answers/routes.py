@@ -21,19 +21,6 @@ class AnswersAPIView(MethodView):
                 'message': 'Update successful'
             }
             return make_response(jsonify(response_object)), 200
-        if response == 302:
-            response_object = {
-                'status': 'fail',
-                'message': 'Please provide correct answer and question id'
-            }
-            return make_response(jsonify(response_object)), 400
-        if response == 203:
-            response_object = {
-                'status': 'fail',
-                'message': 'Unauthorized request.'
-            }
-            return make_response(jsonify(response_object)), 401
-
         else:
             response_object = {
                 'status': 'fail',
@@ -56,6 +43,29 @@ class AnswersAPIView(MethodView):
         }
         return make_response(jsonify(response_object)), 400
 
+class UpdateAnswerAPIView(MethodView):
+    """Marks an answers as accepted"""
+    @jwt_required
+    def put(self,question_id = None, answer_id = None):
+        data = request.get_json(force = True)
+        data['question_id'] = question_id
+        data['answer_id'] = answer_id
+        data['user_id'] = session.get('user_id')
+
+        response = Answer(data).update()
+        if response == 200:
+            response_object = {
+                'status': 'success',
+                'message': 'Answer Marked as preferred'
+            }
+            return make_response(jsonify(response_object)), 200
+        else:
+            response_object = {
+                'status': 'fail',
+                'message': 'Please provide correct answer and question id'
+            }
+        return make_response(jsonify(response_object)), 400
+        
 class AnswersListAPIView(MethodView):
     """
     List API Resource
@@ -102,6 +112,7 @@ class ListQuestionAnswersView(MethodView):
 
 # Define the API resources
 create_view = AnswersAPIView.as_view('create_api')
+create_view1 = UpdateAnswerAPIView.as_view('mark_answer_accepted')
 list_view = AnswersListAPIView.as_view('list_api')
 list_view1 = ListQuestionAnswersView.as_view('list_api_answers')
 
@@ -118,6 +129,14 @@ answers_blueprint.add_url_rule(
 answers_blueprint.add_url_rule(
     '/api/v1/questions/<string:question_id>/answers/<string:answer_id>',
     view_func=create_view,
+    methods=['PUT']
+    
+)
+# Define the rule for accepting an answer
+# Add the rule to the blueprint
+answers_blueprint.add_url_rule(
+    '/api/v1/questions/<string:question_id>/answers/<string:answer_id>/accepted',
+    view_func=create_view1,
     methods=['PUT']
     
 )
