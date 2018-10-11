@@ -13,6 +13,7 @@ class Answer:
         self.answer_id = data.get('answer_id')
         self.accepted = data.get('accepted', None)
         self.user_id = data.get('user_id')
+        self.username = data.get('username')
 
     def save(self):
         """ Creates an answer record in answers table."""
