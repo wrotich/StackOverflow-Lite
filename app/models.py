@@ -11,6 +11,7 @@ class Answer:
         self.answer_body = data.get('answer_body')
         self.question_id = data.get('question_id')
         self.answer_id = data.get('answer_id')
+        self.accepted = data.get('accepted', None)
         self.user_id = data.get('user_id')
 
     def save(self):
@@ -90,26 +91,20 @@ class Answer:
             return False
 
     def update(self):
-        try:
             answer_author = self.answer_author()[0].get('user_id')
             question_author = self.question_author()[0].get('user_id')
             # current user is the answer author
             if int(answer_author) == int(self.user_id):
-                # update answer
                 response = 200 if self.update_answer() else 304
                 return response
 
-            # Accept answer if current user is question author
-            elif int(question_author) == int(self.user_id):
-                # mark it as accepted
-                response = self.update_accept_field()
-                response = 200 if response else 304
-                return response
-            # other users
-            else:
-                return 203
-        except:
-            return 404
+            if int(question_author) == int(self.user_id):
+                # mark answer as accepted
+                if self.accepted == False or self.accepted == True:
+                    self.update_accept_field()
+                    response['result'] = True if response else False
+                    if not response['result']:
+                        response['error'] = 'Please provide correct answer and question id'
 
     def update_accept_field(self):
         """

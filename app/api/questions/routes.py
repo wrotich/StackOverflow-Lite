@@ -61,7 +61,7 @@ class CreateQuestionAPI(MethodView):
         if response == 404:
             response_object = {'status': 'fail', 'message': 'Some error occurred. Question Not Found!.'}
             return make_response(jsonify(response_object)), 404
-        if not response:
+        if response:
             response_object = {
                 'status': 'fail',
                 'message': 'Some error occurred. Please try again.'
