@@ -48,6 +48,7 @@ create_tables_commands = (
         question_id INTEGER NOT NULL,
         answer_body TEXT NOT NULL,
         accepted bool DEFAULT false,
+        username TEXT NOT NULL,
         created_at timestamp with time zone DEFAULT now(),
         FOREIGN KEY (question_id)
             REFERENCES  questions (question_id)
