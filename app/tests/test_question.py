@@ -84,7 +84,7 @@ class QuestionModelTestCase(BaseTestCase):
     def test_delete_question_using_wrong_question_id(self):
         '''Tests deleting a question using a wrong way e.g no question_id. '''
         response = self.client.delete(
-            '/api/v1/questions/None',
+            '/api/v1/questions/none',
             headers={'Authorization': 'JWT ' + self.token}
         )
         self.assertEqual(response.status_code, 400)
@@ -98,7 +98,7 @@ class QuestionModelTestCase(BaseTestCase):
             '/api/v1/questions/'+str(question_id),
             headers={'Authorization': 'JWT ' + self.token}
         )
-        self.assertEqual(response.status_code, 400)
+        self.assertEqual(response.status_code, 200)
 
 if __name__ == '__main__':
     unittest.main()

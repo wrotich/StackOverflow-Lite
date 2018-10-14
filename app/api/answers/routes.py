@@ -32,8 +32,7 @@ class AnswersAPIView(MethodView):
     def post(self, question_id=None):
         data = request.get_json(force=True)
         data['question_id'], data['user_id'] = question_id, session.get('user_id')
-        answer = Answer(data)
-        response = answer.save()
+        response = Answer(data).save()
         if response:
             response_object = {'status': 'success', 'message': response}
             return make_response(jsonify(response_object)), 201
@@ -42,6 +41,7 @@ class AnswersAPIView(MethodView):
             'message': 'Unknown question id. Try a different id.'
         }
         return make_response(jsonify(response_object)), 400
+
 
 class UpdateAnswerAPIView(MethodView):
     """Marks an answers as accepted"""

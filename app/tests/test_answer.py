@@ -58,6 +58,5 @@ class AnswersModelTestCase(BaseTestCase):
         """ Test if a question is created """
         self.assertEqual(response.get_json()['status'], 'success')
 
-
 if __name__ == '__main__':
     unittest.main()
