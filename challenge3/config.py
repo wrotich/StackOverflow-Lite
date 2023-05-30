@@ -6,8 +6,6 @@ class BaseConfig:
     """Base configuration."""
     SECRET_KEY = os.getenv('SECRET_KEY', 'my_pin')
     DEBUG = False
-  
-    
 
 
 class DevelopmentConfig(BaseConfig):
