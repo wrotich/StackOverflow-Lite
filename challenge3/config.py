@@ -6,7 +6,6 @@ class BaseConfig:
     """Base configuration."""
     SECRET_KEY = os.getenv('SECRET_KEY', 'my_pin')
     DEBUG = False
-    
 
 
 class DevelopmentConfig(BaseConfig):
@@ -21,9 +20,7 @@ class TestingConfig(BaseConfig):
     TESTING = True
  
 
-
 class ProductionConfig(BaseConfig):
     """Production configuration."""
     SECRET_KEY = 'my_pin'
     DEBUG = False
-    
