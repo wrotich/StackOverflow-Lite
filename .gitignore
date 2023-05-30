@@ -1,5 +1,11 @@
 __pycache__/
 .pytest_cache/
+app/__init__.pyc
+app/api.pyc
+app/models.pyc
+run.pyc
+tests/__init__.pyc
+myenv
 !.codeclimate.yml
 !.coveragerc
 !.gitignore
