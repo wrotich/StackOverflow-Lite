@@ -6,3 +6,13 @@ app/models.pyc
 run.pyc
 tests/__init__.pyc
 myenv
+!.codeclimate.yml
+!.coveragerc
+!.gitignore
+!.pylintrc
+!.env
+*.pyc
+.vscode
+venv
+.cache
+.coverage
